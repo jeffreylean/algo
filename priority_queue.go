@@ -1,6 +1,8 @@
 package algo
 
-import "container/heap"
+import (
+	"container/heap"
+)
 
 // Create priority queue
 type Item[T comparable] struct {
