@@ -30,9 +30,7 @@ func (this *LRU) Get(key int) int {
 	if LRUNode, ok := this.cache[key]; !ok {
 		return -1
 	} else {
-		if len(this.cache) == this.size {
-			this.removeFromBehind()
-		}
+		this.remove(LRUNode)
 		this.addToFront(LRUNode)
 		return LRUNode.Value
 	}
@@ -42,12 +40,14 @@ func (this *LRU) Put(key, value int) {
 	// Overwrite exising value
 	if LRUNode, ok := this.cache[key]; ok {
 		LRUNode.Value = value
+		this.remove(LRUNode)
 		this.addToFront(LRUNode)
 		return
 	}
 
 	if len(this.cache) == this.size {
-		this.removeFromBehind()
+		delete(this.cache, this.tail.Prev.Key)
+		this.remove(this.tail.Prev)
 	}
 	LRUNode := &LRUNode{Key: key, Value: value}
 	this.cache[key] = LRUNode
@@ -62,9 +62,10 @@ func (this *LRU) addToFront(LRUNode *LRUNode) {
 	LRUNode.Prev = this.head
 }
 
-func (this *LRU) removeFromBehind() {
-	temp := this.tail.Prev
-	delete(this.cache, temp.Key)
-	temp.Prev.Next = this.tail
-	this.tail.Prev = temp.Prev
+func (this *LRU) remove(node *LRUNode) {
+	prev := node.Prev
+	next := node.Next
+
+	prev.Next = next
+	next.Prev = prev
 }
