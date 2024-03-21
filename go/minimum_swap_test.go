@@ -7,8 +7,8 @@ import (
 )
 
 func TestMinimumSwaps(t *testing.T) {
-	arr := []int32{4, 3, 1, 2}
+	arr := []int32{1, 4, 3, 2}
 
 	swaps := MinimumSwaps(arr)
-	assert.Equal(t, int32(3), swaps)
+	assert.Equal(t, int32(1), swaps)
 }

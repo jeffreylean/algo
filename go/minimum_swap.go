@@ -22,6 +22,11 @@ func MinimumSwaps(arr []int32) int32 {
 		for m[i] != i+1 {
 			// Not sorted, than swap it to the index where it should belong.
 			target := m[i] - 1
+
+			if visited[target] {
+				break
+			}
+
 			temp := m[target]
 			m[i], m[target] = temp, m[i]
 
